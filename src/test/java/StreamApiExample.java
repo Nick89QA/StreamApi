@@ -13,24 +13,36 @@ public class StreamApiExample {
      * Метод который возвращает список из монет
      * @return
      */
-    public List<TickerData> getTickers() {
-        return given()
+    @Test
+    public void checkAllCoins() {
+        List<TickerData> tickers =  given()
                 .contentType(ContentType.JSON)
                 .when()
                 .get("https://api.kucoin.com/api/v1/market/allTickers")
                 .then()
-                .log().body()
+                .log().body().statusCode(200)
                 .extract().jsonPath().getList("data.ticker",TickerData.class);
-
     }
 
     /**
-     * метод который фильтрует из массива конкретную монету
+     * метод который возвращает лист монет
      */
-    @Test
-    public void checkCrypto() {
-        List<TickerData> usdtTickers = getTickers().stream().filter(x->x.getSymbol().endsWith("BTC")).collect(Collectors.toList());
-        int a = 0;
-    }
+     public List<TickerData> getAllCoins() {
+         return given()
+                 .contentType(ContentType.JSON)
+                 .when()
+                 .get("https://api.kucoin.com/api/v1/market/allTickers")
+                 .then()
+                 .log().body().statusCode(200)
+                 .extract().jsonPath().getList("data.ticker",TickerData.class);
 
+     }
+
+    /**
+     * метод который фильтрует нужные монеты
+     */
+//    @Test
+//  public void checkUsdt(){
+//      List<TickerData> getUsdt = getAllCoins().stream().filter()
+//  }
 }
